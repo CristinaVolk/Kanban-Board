@@ -3,7 +3,7 @@ const API_KEY =`2XDXDUHQVJVK`
 import axios from 'axios'
 
 export default {
-		login ( { commit }, user )
+		async login ( { commit }, user )
 		{
 			return new Promise( ( resolve, reject ) =>
 			{
@@ -27,7 +27,7 @@ export default {
 					} );
 			} );
 		},
-		register ( { commit }, user )
+		async register ( { commit }, user )
 		{
 			return new Promise( ( resolve, reject ) =>
 			{
@@ -51,13 +51,13 @@ export default {
 					} );
 			} );
 		},
-		logout ( { commit } )
+		async logout ( { commit } )
 		{
 			return new Promise( ( resolve, reject ) =>
 			{
 				commit( 'logout' );
 				localStorage.removeItem( 'token' );
-				delete axios.defaults.headers.common[ 'Authorization' ];
+				 delete axios.defaults.headers.common[ 'Authorization' ];
 				resolve();
 			} );
 		},
@@ -65,7 +65,7 @@ export default {
 	async fetchData ( { commit } )
 	{
 		commit( "set_loading_state", true );
-		return axios.get( 'https://jsonplaceholder.typicode.com/posts' ).then( res =>
+		return axios.get( `${ INITIAL_DATA_URL}/cards` ).then( res =>
 		{
 			commit( "set_initial_data", res.data );
 			commit( "set_loading_state", false );
@@ -98,6 +98,10 @@ export default {
 			{
 				commit( "delete_task_lane_item", deletedTask );
 			} );		
-	}
+	},
+	async reorderTaskListItems ( { commit }, payload )
+	{
+		commit( "reorder_task_lane_items", payload );
+	},
 };
 

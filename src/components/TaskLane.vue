@@ -16,9 +16,10 @@
 <script>
 	import Draggable from 'vuedraggable';
 	import TaskLaneItem from './TaskLaneItem';
+	import { mapActions } from "vuex"
 	export default {
 		name: 'TaskLane',
-		props: [ 'items', 'text', 'id' ],
+		props: [ 'items', 'title', 'id' ],
 		components: {
 			item: TaskLaneItem,
 			draggable: Draggable
@@ -35,13 +36,19 @@
 				{
 					return this.items;
 				},
-				set( items )
+				set( reorderedListItems )
 				{
-					this.$store.commit( 'updateItems', {
-						items,
-						id: this.id
-					} );
+					const payload = {
+						id: this.id,
+						items: reorderedListItems
+					}
+					this.reorderTaskListItems( payload )
 				}
+			},
+			  methods: {
+				...mapActions( {
+					reorderTaskLaneItems: "reorderTaskLaneItems"
+				} )
 			}
 		}
 	};

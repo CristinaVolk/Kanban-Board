@@ -69,5 +69,11 @@ export default {
 			{
 				Vue.delete( list.items, itemIdx );
 			}
+		},
+		// Reorder Task List Items
+		REORDER_TASKLIST_ITEMS ( state, payload )
+		{			
+			const list = state.items.find( ( list, index ) => list[ toString( index ) ] == payload.id );
+			Vue.set( list, "items", payload.items );
 		}
 }
