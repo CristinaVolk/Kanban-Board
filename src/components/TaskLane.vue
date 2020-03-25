@@ -24,34 +24,31 @@
 			item: TaskLaneItem,
 			draggable: Draggable
 		},
-		computed: {
+		computed: 
+		{
 			itemCount()
 			{
 				if ( !this.items ) return '';
 				if ( this.items.length === 1 ) return '1 task';
 				return `${ this.items.length } tasks`;
+			},		
+		draggables: 
+		{
+			get()
+			{
+				return this.items;
 			},
-			draggables: {
-				get()
-				{
-					return this.items;
-				},
-				set( reorderedListItems )
-				{
-					const payload = {
-						id: this.id,
-						items: reorderedListItems
-					}
-					this.reorderTaskListItems( payload )
+			set( reorderedListItems )
+			{
+				const payload = {
+					id: this.id,
+					items: reorderedListItems
 				}
-			},
-			  methods: {
-				...mapActions( {
-					reorderTaskLaneItems: "reorderTaskLaneItems"
-				} )
+				this.$store.commit.reorderTaskListItems( payload )
 			}
 		}
-	};
+	}
+}
 </script>
 
 <style>

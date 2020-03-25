@@ -8,7 +8,7 @@ export default {
 			return new Promise( ( resolve, reject ) =>
 			{
 				commit( 'auth_request' );
-				axios.post( `${INITIAL_DATA_URL}/users/login/`, user )
+				axios.post( `${INITIAL_DATA_URL}/users/login&API_KEY=${API_KEY}`, user )
 					.then( resp =>
 					{
 						const token = resp.data.token;
@@ -65,7 +65,7 @@ export default {
 	async fetchData ( { commit } )
 	{
 		commit( "set_loading_state", true );
-		return axios.get( `${ INITIAL_DATA_URL}/cards` ).then( res =>
+		return axios.get( `${ INITIAL_DATA_URL }/cards&API_KEY=${ API_KEY }` ).then( res =>
 		{
 			commit( "set_initial_data", res.data );
 			commit( "set_loading_state", false );
@@ -76,7 +76,7 @@ export default {
 	{
 		const newItem = { ...newTask, ...{ id: guid(), seq_num: 0} }
 		commit( "set_loading_state", true );
-		return axios.post( `${ INITIAL_DATA_URL}/cards/`, newItem, { id: guid(), seq_num: 0 } ).then( res =>
+		return axios.post( `${ INITIAL_DATA_URL }/cards/&API_KEY=${ API_KEY }`, newItem, { id: guid(), seq_num: 0 } ).then( res =>
 		{
 			commit( "addItem", newItem );
 			commit( "set_loading_state", false );
@@ -99,7 +99,7 @@ export default {
 				commit( "delete_task_lane_item", deletedTask );
 			} );		
 	},
-	async reorderTaskListItems ( { commit }, payload )
+	reorderTaskListItems ( { commit }, payload )
 	{
 		commit( "reorder_task_lane_items", payload );
 	},

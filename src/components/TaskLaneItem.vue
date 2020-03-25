@@ -1,34 +1,48 @@
 <template>
-	<div class="card task-lane-item">
+	<div class="card task-lane-item" v-if="!isEditing" @click.prevent="startEditing">
+		<div class="card-block">
+			<div :class="[isNewItem ? 'text-center text-dark font-weight-bold disable-select' : 'text-dark disable-select']">
+				<span> {{ displayText }} </span>
+			</div>
+		</div>
+	</div>
+
+	<div class="card" v-else>
 		<div class="card-block">
 			<form class="form">
 				<div class="form-group">					
-						<textarea name="itemDetails" rows="3" class="form-control" v-model.trim="form.text" v-validate="'required'"
-							data-vv-as="Item Details" placeholder="Your item description"></textarea>
+					<textarea 
+						name="itemDetails" 
+						rows="3" class="form-control" 
+						v-model.trim="form.text" 
+						v-validate="'required'"
+						data-vv-as="Item Details" 
+						placeholder="Your item description">
+					</textarea>
 						<small class="text-danger">{{ errors.first("itemDetails") }}</small>
-					</div>
+				</div>
 
-			<div :class="[isNewItem ? 'text-center text-dark font-weight-bold disable-select' : 'text-dark disable-select']">
-				<span> {{ displayText }} </span>
-				<div>
-					<button class="btn btn-outline-secondary btn-sm mr-2" @click.prevent="save">
-						Save
-					</button>
-					<button class="btn btn-outline-secondary btn-sm" @click.prevent="cancel">
-						Cancel
-					</button>
+			
+				<div :class="[isNewItem ? 'text-center' : 'd-flex justify-content-between', 'form-group']">
+					<div>
+						<button class="btn btn-outline-secondary btn-sm mr-2" @click.prevent="save">
+							Save
+						</button>
+						<button class="btn btn-outline-secondary btn-sm" @click.prevent="cancel">
+							Cancel
+						</button>
+					</div>
+					<div v-show="!isNewItem">
+						<button class="btn btn-sm text-danger" @click.prevent="remove">
+							Delete
+						</button>
+					</div>
 				</div>
-				<div v-show="!isNewItem">
-					<button class="btn btn-sm text-danger" @click.prevent="remove">
-						Delete
-					</button>
-				</div>
-				</div>
-				</form>
-			</div>			
+		    </form>
 		</div>
 	</div>
 </template>
+
 
 <script>
 	import { mapActions } from "vuex"
@@ -47,62 +61,59 @@
 				}
 			},
 
-		computed: {
+		computed:
+		{
 			isNewItem() {
 			return this.item.id == ""
 			},
-			displayText() {
-			return this.isNewItem ? "+ New Item" : <h5 class="card-title">
-														<span class="text-muted">#{ this.item.id }</span>
-																			    <h5>{ this.item.text } </h5>
-													</h5>													
-						}
-				},
+			displayText() { 
+				return this.isNewItem ? "+ New Item" : this.item.text }
+		},
 		methods: 
 		{
-				...mapActions( {
-					saveTaskListItem: "saveTaskLaneItem",
-					deleteTaskListItem: "deleteTaskLaneItem"
-				} ),
-				startEditing()
+			...mapActions( {
+				saveTaskListItem: "saveTaskLaneItem",
+				deleteTaskListItem: "deleteTaskLaneItem"
+			} ),
+			startEditing()
+			{
+				this.form.id = this.item.id
+				this.form.text = this.item.text
+				this.isEditing = true
+				this.$emit( "item-editing" )
+			},
+			clearForm()
+			{
+				this.form.id = ""
+				this.form.text = ""
+			},
+			save()
+			{
+				this.$validator.validateAll().then( result =>
 				{
-					this.form.id = this.item.id
-					this.form.text = this.item.text
-					this.isEditing = true
-					this.$emit( "item-editing" )
-				},
-				clearForm()
-				{
-					this.form.id = ""
-					this.form.text = ""
-				},
-				save()
-				{
-					this.$validator.validateAll().then( result =>
+					if ( result )
 					{
-						if ( result )
-						{
-						const updatedItem = {
-							id: this.form.id,
-							text: this.form.text
-						}
-							this.saveTaskLaneItem( { item: updatedItem } )
-							this.isEditing = false
-							this.$emit( "item-edited" )
-							this.$validator.reset()
-						}
-					} )
-				},
-				cancel()
-				{
-					this.isEditing = false
-					this.$emit( "item-cancelled" )
-				},
-				remove()
-				{
-					this.deleteTaskLaneItem( { item: this.item } )
-								this.$emit( "item-deleted" )
-				}
+					const updatedItem = {
+					id: this.form.id,
+					text: this.form.text
+					}
+						this.saveTaskLaneItem( { item: updatedItem } )
+						this.isEditing = false
+						this.$emit( "item-edited" )
+						this.$validator.reset()
+					}
+				} )
+			},
+			cancel()
+			{
+				this.isEditing = false
+				this.$emit( "item-cancelled" )
+			},
+			remove()
+			{
+				this.deleteTaskLaneItem( { item: this.item } )
+							this.$emit( "item-deleted" )
+			}
 		}
 					
 	};

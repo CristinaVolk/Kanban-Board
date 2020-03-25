@@ -24,10 +24,7 @@
 	import { mapState } from 'vuex';
 	export default {
 		name: 'KanbanBoard',
-		components: {
-			'menu-bar': MenuBar,
-			'task-lane': TaskLane
-		},
+		components: {MenuBar, TaskLane },
 
 		beforeCreate() {
 			this.$store.dispatch( "fetchData" )
@@ -38,19 +35,6 @@
 			inProgress: s => s.items["1"],
 			needs_review: s => s.items["2"],
 			approved: s => s.items["3"],
-		} ),
-		methods: {
-			register: function ()
-			{
-				let data = {
-					username: this.username,
-					email: this.email,
-					password: this.password
-				}
-				this.$store.dispatch( 'register', data )
-					.then( () => this.$router.push( '/' ) )
-					.catch( err => console.log( err ) )
-			}
-		}
+		} )
 	};
 </script>
