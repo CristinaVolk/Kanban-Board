@@ -16,35 +16,39 @@
 <script>
 	import Draggable from 'vuedraggable';
 	import TaskLaneItem from './TaskLaneItem';
+	import { mapActions } from "vuex"
 	export default {
 		name: 'TaskLane',
-		props: [ 'items', 'text', 'id' ],
+		props: [ 'items', 'title', 'id' ],
 		components: {
 			item: TaskLaneItem,
 			draggable: Draggable
 		},
-		computed: {
+		computed: 
+		{
 			itemCount()
 			{
 				if ( !this.items ) return '';
 				if ( this.items.length === 1 ) return '1 task';
 				return `${ this.items.length } tasks`;
+			},		
+		draggables: 
+		{
+			get()
+			{
+				return this.items;
 			},
-			draggables: {
-				get()
-				{
-					return this.items;
-				},
-				set( items )
-				{
-					this.$store.commit( 'updateItems', {
-						items,
-						id: this.id
-					} );
+			set( reorderedListItems )
+			{
+				const payload = {
+					id: this.id,
+					items: reorderedListItems
 				}
+				this.$store.commit.reorderTaskListItems( payload )
 			}
 		}
-	};
+	}
+}
 </script>
 
 <style>

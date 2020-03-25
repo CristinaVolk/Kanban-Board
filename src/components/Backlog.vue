@@ -1,7 +1,7 @@
 <template>
 	<div class="backlog-view">
-		<menu-bar></menu-bar>
-		<new-item></new-item>
+		<menu-bar></menu-bar> 
+		<new-item-form></new-item-form>
 
 		<div class="card" v-for="item in items" :key="item.id">
 			<div class="card-block">
@@ -39,10 +39,7 @@
 	};
 	export default {
 		name: 'Backlog',
-		components: {
-			'menu-bar': MenuBar,
-			'new-item': NewItemForm
-		},
+		components: { MenuBar, NewItemForm },
 		computed: mapState( {
 			items: s => [ ...s.items["0"], ...s.items["1"], ...s.items["2"], ...s.items["3"] ]
 		} ),

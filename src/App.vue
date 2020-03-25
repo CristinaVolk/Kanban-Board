@@ -8,34 +8,45 @@
   </div>
 </template>
 <script>
+  import axios from "axios"
   import { mapGetters } from "vuex"
 
   export default {
     name: "App",
-    computed: {
-          ...mapGetters( {
-            isLoggedIn: "isLoggedIn"
-          } )
-        },
+    computed: {...mapGetters( [ 'isLoggedIn' ] )},
     methods: {
-      logout: function () {
+      logout() {
         this.$store.dispatch('logout')
         .then(() => {
           this.$router.push('/login')
         })
       }
     },
-    created: function () {
-      this.$http.interceptors.response.use(undefined, function (err) {
-        return new Promise(function (resolve, reject) {
-          if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-            this.$store.dispatch(logout)
+    created () {
+      this.$http.interceptors.response.use(function (response) {
+        return response;
+      }, function (error)
+      {
+        const originalRequest = error.config;
+        if ( error.response.status === 401 && !originalRequest._retry )
+        {
+          originalRequest._retry = true;
+          const refreshToken = window.localStorage.getItem( 'refreshToken' );
+              return axios.post( 'https://trello.backend.tests.nekidaem.ru/api/v1/users/refresh_token/', { refreshToken } )
+              .then( ( { data } ) =>
+              {
+                window.localStorage.setItem( 'token', data.token );
+                window.localStorage.setItem( 'refreshToken', data.refreshToken );
+                axios.defaults.headers.common[ 'Authorization' ] = 'Bearer ' + data.token;
+                originalRequest.headers[ 'Authorization' ] = 'Bearer ' + data.token;
+                return axios( originalRequest );
+              } );
           }
-          throw err;
+
+          return Promise.reject( error );
         });
-      });
+      }
     }
-  }
 </script>
 
 <style>

@@ -1,4 +1,4 @@
-# Kanban-Board
+
 ## Build Setup
 
 ``` bash

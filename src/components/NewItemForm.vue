@@ -1,7 +1,7 @@
 <template>
 	<div class="add-item">
 		<form action="#" method="post" v-on:submit.prevent="submitForm">
-			<input type="text" v-model="text" placeholder="A description of the task">	
+			<input type="text" v-model="text" value="A description of the task" :placeholder="text">	
 		</form>
 	</div>
 </template>
