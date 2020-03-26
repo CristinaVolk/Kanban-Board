@@ -24,15 +24,15 @@
 			item: TaskLaneItem,
 			draggable: Draggable
 		},
-		computed: 
+		computed:
 		{
 			itemCount()
 			{
 				if ( !this.items ) return '';
 				if ( this.items.length === 1 ) return '1 task';
 				return `${ this.items.length } tasks`;
-			},		
-		draggables: 
+			},
+		draggables:
 		{
 			get()
 			{
@@ -57,5 +57,5 @@
 		min-width: 400px;
 	}
 
-	
+
 </style>

@@ -8,7 +8,7 @@ export default {
 			return new Promise( ( resolve, reject ) =>
 			{
 				commit( 'auth_request' );
-				axios.post( `${INITIAL_DATA_URL}/users/login&API_KEY=${API_KEY}`, user )
+				axios.post( `${ INITIAL_DATA_URL }/users/login/`, user )
 					.then( resp =>
 					{
 						const token = resp.data.token;
@@ -61,7 +61,7 @@ export default {
 				resolve();
 			} );
 		},
-		
+
 	async fetchData ( { commit } )
 	{
 		commit( "set_loading_state", true );
@@ -70,7 +70,7 @@ export default {
 			commit( "set_initial_data", res.data );
 			commit( "set_loading_state", false );
 		} );
-	},	
+	},
 
 	async createTask ( { commit }, newTask )
 	{
@@ -88,7 +88,7 @@ export default {
 		return axios.patch( `${ INITIAL_DATA_URL }/cards/${updatedTask.id}` )
 			.then( res => {
 			commit( "save_task_lane_item", updatedTask );
-		} );		
+		} );
 	},
 
 	async deleteTaskLaneItem ( { commit }, deletedTask )
@@ -97,7 +97,7 @@ export default {
 			.then( res =>
 			{
 				commit( "delete_task_lane_item", deletedTask );
-			} );		
+			} );
 	},
 	reorderTaskListItems ( { commit }, payload )
 	{

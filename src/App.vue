@@ -37,8 +37,8 @@
               {
                 window.localStorage.setItem( 'token', data.token );
                 window.localStorage.setItem( 'refreshToken', data.refreshToken );
-                axios.defaults.headers.common[ 'Authorization' ] = 'Bearer ' + data.token;
-                originalRequest.headers[ 'Authorization' ] = 'Bearer ' + data.token;
+                axios.defaults.headers.common[ 'Authorization' ] = data.token;
+                originalRequest.headers[ 'Authorization' ] =data.token;
                 return axios( originalRequest );
               } );
           }
@@ -59,11 +59,11 @@
 }
 #nav {
   padding: 30px;
+  color: #e0e5ea;
 }
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
   cursor: pointer;
 }
 
