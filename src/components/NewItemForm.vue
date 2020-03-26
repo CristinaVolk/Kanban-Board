@@ -1,7 +1,7 @@
 <template>
 	<div class="add-item">
 		<form action="#" method="post" v-on:submit.prevent="submitForm">
-			<input type="text" v-model="text" value="A description of the task" :placeholder="text">	
+			<input type="text" v-model="text" value="A description of the task" :placeholder="text">
 		</form>
 	</div>
 </template>
@@ -11,7 +11,7 @@
 		name: 'NewItemForm',
 		data()
 		{
-			return {				
+			return {
 				text: '',
 			};
 		},
@@ -20,15 +20,15 @@
 			{
 				if ( this.text )
 				{
-					let newTask = {	
+					let newTask = {
 							row: "0",
-							text: this.text,				
+							text: this.text,
 					}
 					this.$store.dispatch( 'createTask', newTask )
 						.then( () => this.$router.push( '/' ) )
 						.catch( err => console.log( err ) )
-				}					
-					this.text = '';			
+				}
+					this.text = '';
 			}
 		}
 	};

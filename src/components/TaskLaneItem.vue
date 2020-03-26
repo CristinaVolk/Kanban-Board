@@ -10,19 +10,19 @@
 	<div class="card" v-else>
 		<div class="card-block">
 			<form class="form">
-				<div class="form-group">					
-					<textarea 
-						name="itemDetails" 
-						rows="3" class="form-control" 
-						v-model.trim="form.text" 
+				<div class="form-group">
+					<textarea
+						name="itemDetails"
+						rows="3" class="form-control"
+						v-model.trim="form.text"
 						v-validate="'required'"
-						data-vv-as="Item Details" 
+						data-vv-as="Item Details"
 						placeholder="Your item description">
 					</textarea>
 						<small class="text-danger">{{ errors.first("itemDetails") }}</small>
 				</div>
 
-			
+
 				<div :class="[isNewItem ? 'text-center' : 'd-flex justify-content-between', 'form-group']">
 					<div>
 						<button class="btn btn-outline-secondary btn-sm mr-2" @click.prevent="save">
@@ -66,10 +66,10 @@
 			isNewItem() {
 			return this.item.id == ""
 			},
-			displayText() { 
+			displayText() {
 				return this.isNewItem ? "+ New Item" : this.item.text }
 		},
-		methods: 
+		methods:
 		{
 			...mapActions( {
 				saveTaskListItem: "saveTaskLaneItem",
@@ -115,7 +115,7 @@
 							this.$emit( "item-deleted" )
 			}
 		}
-					
+
 	};
 
 

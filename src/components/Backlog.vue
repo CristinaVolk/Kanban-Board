@@ -1,6 +1,6 @@
 <template>
 	<div class="backlog-view">
-		<menu-bar></menu-bar> 
+		<menu-bar></menu-bar>
 		<new-item-form></new-item-form>
 
 		<div class="card" v-for="item in items" :key="item.id">
@@ -41,7 +41,7 @@
 		name: 'Backlog',
 		components: { MenuBar, NewItemForm },
 		computed: mapState( {
-			items: s => [ ...s.items["0"], ...s.items["1"], ...s.items["2"], ...s.items["3"] ]
+			items: state => [ ...state.items["0"], ...state.items["1"], ...state.items["2"], ...state.items["3"] ]
 		} ),
 		methods: {
 			itemLane( item )

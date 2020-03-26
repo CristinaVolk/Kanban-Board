@@ -32,6 +32,10 @@
 <style>
 	.menubar {
 		margin-bottom: 16px;
+		color: #e0e5ea;
+	}
+	.menubar a {
+		color: #88D0F7;
 	}
 	 #space {
 		 margin: 20px;
