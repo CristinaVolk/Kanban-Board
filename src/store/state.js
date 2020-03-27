@@ -3,12 +3,7 @@ export default {
 		status: '',
 		token: localStorage.getItem( 'token' ) || '',
 		user: {},
-		items: {
-			"0": [],
-			"1": [],
-			"2": [],
-			"3":[]
-		},		    
+		items: [],
 		nextId: 1
 
 }

@@ -2,7 +2,10 @@
 	<div class="card task-lane-item" v-if="!isEditing" @click.prevent="startEditing">
 		<div class="card-block">
 			<div :class="[isNewItem ? 'text-center text-dark font-weight-bold disable-select' : 'text-dark disable-select']">
-				<span> {{ displayText }} </span>
+				<span v-if="task.id" class ="w-full flex-no-shrink font-bold"
+				>{{item.id}}</span>
+				<p
+				class="w-full flex-no-shrink mt-1 text-sm"> {{ displayText }} </p>
 			</div>
 		</div>
 	</div>
@@ -12,8 +15,9 @@
 			<form class="form">
 				<div class="form-group">
 					<textarea
+						class = "relative bg-transparent px-2 border mt-2 h-64 border-none leading normal"
 						name="itemDetails"
-						rows="3" class="form-control"
+						rows="3"
 						v-model.trim="form.text"
 						v-validate="'required'"
 						data-vv-as="Item Details"

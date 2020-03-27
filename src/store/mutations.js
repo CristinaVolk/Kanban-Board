@@ -19,7 +19,7 @@ export default {
 			state.status = '';
 			state.token = '';
 		},
-			
+
 		set_initial_data ( state, fetchedItems)
 		{
 			state.items[ "0" ] = fetchedItems.filter( item => item.row == "0")
@@ -33,16 +33,15 @@ export default {
 		{
 			state.isLoading = payload;
 		},
-		
-		addTask ( state, task )
+
+		addTask ( state, newTask )
 		{
-			state.items["0"].push( Object.assign( task ) );
-			state.nextId += 1;
-		},	
-		
+			state.items[ "0" ].push( Object.assign( newTask ) );
+		},
+
 		// Save Task List Item
 		saveTaskLaneItem ( state, updatedTask )
-		{			
+		{
 			const list = state.items.find( (list, index) => list[toString(index)] == updatedTask.row );
 			const itemIdx = list.findIndex( item => item.id == updatedTask.id );
 
@@ -72,7 +71,7 @@ export default {
 		},
 		// Reorder Task List Items
 		REORDER_TASKLIST_ITEMS ( state, payload )
-		{			
+		{
 			const list = state.items.find( ( list, index ) => list[ toString( index ) ] == payload.id );
 			Vue.set( list, "items", payload.items );
 		}

@@ -2,12 +2,20 @@
 	<div class="card">
 		<div class="card-body">
 			<draggable v-model="draggables" :options="{ group: 'default' }">
-				<div v-for="item in items" :key="item.id">
-					<item id="item-lane" :item="item"></item>
+				<div v-for="item in items"
+				:key="item.id"
+				@drop = "moveTask($event, items)"
+				@dragover.prevent
+				@dragenter.prevent
+				>
+					<item id="item-lane"
+					:item="item"
+					draggable
+					@dragstart = "pickupItem($event, item.id, columnIndex)"></item>
 				</div>
 			</draggable>
 		</div>
-		
+
 	</div>
 </template>
 
@@ -17,7 +25,7 @@
 	import { mapActions } from "vuex"
 	export default {
 		name: 'TaskLane',
-		props: [ 'items', 'title', 'id' ],
+		props: [ 'items', 'title', 'columnIndex' ],
 		components: {
 			item: TaskLaneItem,
 			draggable: Draggable
@@ -38,6 +46,18 @@
 				}
 				this.$store.commit.reorderTaskListItems( payload )
 			}
+		}
+	},
+	methods: {
+		pickupTask(e, itemIndex, fromColumnIndex){
+			e.dataTransfer.effectAllowed = 'move'
+			e.dataTransfer.dropEffect = 'move'
+
+			e.dataTransfer.setData(item-index, itemIndex)
+			e.dataTransfer.setData('from-column-index', fromColumnIndex)
+		},
+		moveTask (e, toTasks) {
+
 		}
 	}
 }

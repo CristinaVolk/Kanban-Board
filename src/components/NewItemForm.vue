@@ -1,7 +1,7 @@
 <template>
 	<div class="add-item">
 		<form action="#" method="post" v-on:submit.prevent="submitForm">
-			<input type="text" v-model="text" placeholder="Add a card">
+			<input type="text" class="block p-2 w-full bg-transparent" v-model="text" placeholder="Add a card" @keyup.enter="submitForm">
 		</form>
 	</div>
 </template>
