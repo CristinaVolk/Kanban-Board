@@ -5,7 +5,7 @@
 
 		<div class="card" v-for="item in items" :key="item.id">
 			<div class="card-block">
-				<h5 style="color: black;" class="card-title">
+				<h5 style="color: whitesmoke;" class="card-title">
 					<span class="text-muted">#{{item.id}}</span>
 					{{item.title}}
 					<span :class="badgeClass(item)">{{badgeText(item)}}</span>

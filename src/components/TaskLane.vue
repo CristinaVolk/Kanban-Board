@@ -7,9 +7,7 @@
 				</div>
 			</draggable>
 		</div>
-		<div class="card-footer text-muted">
-			{{itemCount}}
-		</div>
+		
 	</div>
 </template>
 
@@ -26,12 +24,6 @@
 		},
 		computed:
 		{
-			itemCount()
-			{
-				if ( !this.items ) return '';
-				if ( this.items.length === 1 ) return '1 task';
-				return `${ this.items.length } tasks`;
-			},
 		draggables:
 		{
 			get()

@@ -1,13 +1,14 @@
 <template>
 	<div class="add-item">
 		<form action="#" method="post" v-on:submit.prevent="submitForm">
-			<input type="text" v-model="text" value="A description of the task" :placeholder="text">
+			<input type="text" v-model="text" placeholder="Add a card">
 		</form>
 	</div>
 </template>
 
 <script>
 	export default {
+		props: ["row"],
 		name: 'NewItemForm',
 		data()
 		{
@@ -21,8 +22,8 @@
 				if ( this.text )
 				{
 					let newTask = {
-							row: "0",
-							text: this.text,
+							row: this.row,
+							text: this.text
 					}
 					this.$store.dispatch( 'createTask', newTask )
 						.then( () => this.$router.push( '/' ) )
@@ -42,7 +43,7 @@
 		width: 100%;
 		transition: all 0.25s;
 		background: inherit;
-		color: black
+		color: whitesmoke
 		;
 	}
 
@@ -52,5 +53,9 @@
 
 	.add-item {
 		margin: 30px 0;
+	}
+
+	::placeholder {
+  		color:whitesmoke;
 	}
 </style>
