@@ -65,8 +65,11 @@ export default {
 	async fetchData ( { commit } )
 	{
 		commit( "set_loading_state", true );
-		return axios.get( `${ INITIAL_DATA_URL }/cards&API_KEY=${ API_KEY }` ).then( res =>
-		{
+
+		return axios.get( `${ INITIAL_DATA_URL }/cards&API_KEY=${ API_KEY }` )
+			.then( res =>
+			{
+			console.log(res.data[0])
 			commit( "set_initial_data", res.data );
 			commit( "set_loading_state", false );
 		} );
@@ -77,7 +80,8 @@ export default {
 		state.nextId += 1;
 		const newItem = { ...newTask, ...{ id: state.nextId, seq_num: state.nextId} }
 		commit( "set_loading_state", true );
-		return axios.post( `${ INITIAL_DATA_URL }/cards/&API_KEY=${ API_KEY }`, newItem, { id: guid(), seq_num: newTask.row } ).then( res =>
+		return axios.post( `${ INITIAL_DATA_URL }/cards/&API_KEY=${ API_KEY }`, newItem )
+		.then( res =>
 		{
 			commit( "addItem", newItem );
 			commit( "set_loading_state", false );

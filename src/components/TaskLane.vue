@@ -1,34 +1,30 @@
 <template>
 	<div class="card">
 		<div class="card-body">
-			<draggable v-model="draggables" :options="{ group: 'default' }">
 				<div v-for="item in items"
 				:key="item.id"
-				@drop = "moveTask($event, items)"
+				@drop = "moveItem($event, items)"
 				@dragover.prevent
 				@dragenter.prevent
+				draggable
+				@dragstart = "pickupItem($event, item.seq_num, columnIndex)"
 				>
-					<item id="item-lane"
-					:item="item"
-					draggable
-					@dragstart = "pickupItem($event, item.id, columnIndex)"></item>
+				<task-lane-item :item="item"></task-lane-item>
 				</div>
-			</draggable>
 		</div>
 
 	</div>
 </template>
 
 <script>
-	import Draggable from 'vuedraggable';
+	//import Draggable from 'vuedraggable';
 	import TaskLaneItem from './TaskLaneItem';
 	import { mapActions } from "vuex"
 	export default {
 		name: 'TaskLane',
-		props: [ 'items', 'title', 'columnIndex' ],
-		components: {
-			item: TaskLaneItem,
-			draggable: Draggable
+		props: [ 'columnIndex', 'title', 'items' ],
+		components: { TaskLaneItem
+			//draggable: Draggable
 		},
 		computed:
 		{
@@ -48,26 +44,23 @@
 			}
 		}
 	},
-	methods: {
-		pickupTask(e, itemIndex, fromColumnIndex){
-			e.dataTransfer.effectAllowed = 'move'
-			e.dataTransfer.dropEffect = 'move'
+	methods:  {
+		pickupItem(event, itemISeqNum, fromColumnIndex){
+			event.dataTransfer.effectAllowed = 'move'
+			event.dataTransfer.dropEffect = 'move'
 
-			e.dataTransfer.setData(item-index, itemIndex)
-			e.dataTransfer.setData('from-column-index', fromColumnIndex)
+			event.dataTransfer.setData('item-seq_num', itemISeqNum)
+			event.dataTransfer.setData('from-column-index', fromColumnIndex)
 		},
-		moveTask (e, toTasks) {
+		moveItem (event, toItems) {
+			const fromColumnIndex = event.dataTransfer.getData('from-column-index')
+			const fromItems = this.$store.state.items.filter(item => item.row == fromColumnIndex)
+			const itemSeqNum = event.dataTransfer.getData('item-seq_num')
+
+			this.$store.commit('move_task', { fromItems, toItems, itemSeqNum})
 
 		}
 	}
 }
 </script>
 
-<style>
-	.card-body>* {
-		min-height: 50px;
-		min-width: 400px;
-	}
-
-
-</style>

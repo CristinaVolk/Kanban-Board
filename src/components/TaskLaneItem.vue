@@ -2,7 +2,7 @@
 	<div class="card task-lane-item" v-if="!isEditing" @click.prevent="startEditing">
 		<div class="card-block">
 			<div :class="[isNewItem ? 'text-center text-dark font-weight-bold disable-select' : 'text-dark disable-select']">
-				<span v-if="task.id" class ="w-full flex-no-shrink font-bold"
+				<span v-if="item.id" class ="w-full flex-no-shrink font-bold"
 				>{{item.id}}</span>
 				<p
 				class="w-full flex-no-shrink mt-1 text-sm"> {{ displayText }} </p>
@@ -128,5 +128,6 @@
 <style>
 	.card.task-lane-item {
 		background: #627180;
+		margin-top: 20px;
 	}
 </style>

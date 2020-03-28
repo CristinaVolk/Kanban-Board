@@ -41,20 +41,19 @@
 		name: 'Backlog',
 		components: { MenuBar, NewItemForm },
 		computed: mapState( {
-			items: state => [ ...state.items["0"], ...state.items["1"], ...state.items["2"], ...state.items["3"] ]
-		} ),
+			items: state => [ ...state.items] } ),
 		methods: {
 			itemLane( item )
 			{
-				if ( this.$store.state.items["0"].includes( item ) )
+				if ( this.$store.state.items.includes( item ) )
 				{
 					return 'on_hold';
 				}
-				if ( this.$store.state.items["1"].includes( item ) )
+				if ( this.$store.state.items.includes( item ) )
 				{
 					return 'inProgress';
 				}
-				if ( this.$store.state.items["2"].includes( item ) )
+				if ( this.$store.state.items.includes( item ) )
 				{
 					return 'needs_review';
 				}

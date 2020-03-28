@@ -20,12 +20,9 @@ export default {
 			state.token = '';
 		},
 
-		set_initial_data ( state, fetchedItems)
+		set_initial_data ( state, payload)
 		{
-			state.items[ "0" ] = fetchedItems.filter( item => item.row == "0")
-			state.items[ "1" ] = fetchedItems.filter( item => item.row == "1")
-			state.items[ "2" ] = fetchedItems.filter( item => item.row == "2" )
-			state.items[ "3" ] = fetchedItems.filter( item => item.row == "3")
+		state.items = payload		
 		},
 
 		// Set Loading State
@@ -74,5 +71,10 @@ export default {
 		{
 			const list = state.items.find( ( list, index ) => list[ toString( index ) ] == payload.id );
 			Vue.set( list, "items", payload.items );
+		},
+		move_task ( state, {fromItems, toItems, itemSeqNum} )
+		{
+			const itemToMove = fromItems.splice( itemSeqNum, 1 )[ 0 ];
+			toItems.push( itemToMove)
 		}
 }
