@@ -65,7 +65,7 @@ export default {
 		move_task ( state, {fromItems, toItems, itemSeqNum} )
 		{
 			const itemToMove = fromItems.splice( itemSeqNum, 1 )[ 0 ];
-			itemToMove.row = columnIndex
+			//itemToMove.row = columnIndex
 			toItems.push( itemToMove)
 		}
 }
