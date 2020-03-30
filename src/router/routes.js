@@ -3,7 +3,6 @@ import Register from '@/components/Register'
 import KanbanBoard from '@/components/KanbanBoard';
 import Backlog from '@/components/Backlog';
 
-
 let routes = [
     {
       path: '/login',
@@ -28,18 +27,5 @@ let routes = [
       redirect: '/board'
     }
   ]
-
-
-/*routes.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isLoggedIn) {
-      next()
-      return
-    }
-    next('/login') 
-  } else {
-    next() 
-  }
-})*/
 
 export default routes

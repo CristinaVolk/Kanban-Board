@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-     <span v-if="isLoggedIn"></span>
-      <a @click="logout">Logout</a>
+     <span v-if="isLoggedIn"> <a @click="logout">Logout</a></span>
       </div>
       <router-view></router-view>
   </div>
@@ -13,7 +12,12 @@
 
   export default {
     name: "App",
-    computed: {...mapGetters( [ 'isLoggedIn' ] )},
+    computed: {...mapGetters( [ 'isLoggedIn' ] )
+    },
+    beforeCreate () {
+      //window.localStorage.setItem('user-token', '')
+      this.$store.dispatch( "fetchData" )
+    },
     methods: {
       logout() {
         this.$store.dispatch('logout')
@@ -22,7 +26,7 @@
         })
       }
     },
-    created () {
+    created () {      
       this.$http.interceptors.response.use(function (response) {
         return response;
       }, function (error)
@@ -35,8 +39,8 @@
               return axios.post( 'https://trello.backend.tests.nekidaem.ru/api/v1/users/refresh_token/', { refreshToken } )
               .then( ( { data } ) =>
               {
-                window.localStorage.setItem( 'token', data.token );
-                window.localStorage.setItem( 'refreshToken', data.refreshToken );
+                //window.localStorage.setItem( 'user-token', data.token );
+                //window.localStorage.setItem( 'refreshToken', data.refreshToken );
                 axios.defaults.headers.common[ 'Authorization' ] = data.token;
                 originalRequest.headers[ 'Authorization' ] =data.token;
                 return axios( originalRequest );

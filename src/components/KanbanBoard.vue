@@ -34,24 +34,19 @@
 	export default {
 		name: 'KanbanBoard',
 		components: {MenuBar, TaskLane, NewItemForm },
-
-		beforeCreate() {
-			this.$store.dispatch( "fetchData" )
-		},
-
 		computed: mapState( {
-			on_hold: state => state.items.filter( item => item.row === "0"),
-			inProgress: state => state.items.filter( item => item.row === "1" ),
-			needs_review: state => state.items.filter( item => item.row === "2" ),
-			approved: state => state.items.filter( item => item.row === "3" ),
+			on_hold: state => state.items.filter( item => item.userId === 1),
+			inProgress: state => state.items.filter( item => item.userId  === 2 ),
+			needs_review: state => state.items.filter( item => item.userId  === 3),
+			approved: state => state.items.filter( item => item.userId  === 4 ),
 
-			onHoldItemCount: state =>  !state.items ? `${state.items.filter( item => item.row === "0").length}` : `0`,
+			onHoldItemCount: state =>  !state.items ? `${state.items.filter( item => item.userId  === 1).length}` : `0`,
 
-			inProgressItemCount : state => !state.items ? `${ state.items.filter( item => item.row === "1" ).length }` : `0`,
+			inProgressItemCount : state => !state.items ? `${ state.items.filter( item => item.userId  === 2 ).length }` : `0`,
 
-			needsReviewItemCount : state => !state.items ? `${ state.items.filter( item => item.row === "2" ).length }` : `0`,
+			needsReviewItemCount : state => !state.items ? `${ state.items.filter( item => item.userId  ===3 ).length }` : `0`,
 
-			approvedItemCount : state => !state.items ? `${ state.items.filter( item => item.row === "3" ).length }` : `0`
+			approvedItemCount : state => !state.items ? `${ state.items.filter( item => item.userId  === 4 ).length }` : `0`
 		})
 	}
 </script>

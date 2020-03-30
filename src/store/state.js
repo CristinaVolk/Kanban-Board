@@ -1,7 +1,6 @@
 export default {
-		isLoading: true,
 		status: '',
-		token: localStorage.getItem( 'token' ) || '',
+		token: localStorage.getItem( 'user-token' ) || false,
 		user: {},
 		items: [],
 		nextId: 1

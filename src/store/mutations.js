@@ -22,7 +22,7 @@ export default {
 
 		set_initial_data ( state, payload)
 		{
-		state.items = payload		
+		state.items = payload
 		},
 
 		// Set Loading State
@@ -37,41 +37,28 @@ export default {
 		},
 
 		// Save Task List Item
-		saveTaskLaneItem ( state, updatedTask )
+		save_task_lane_item ( state, updatedItem )
 		{
-			const list = state.items.find( (list, index) => list[toString(index)] == updatedTask.row );
-			const itemIdx = list.findIndex( item => item.id == updatedTask.id );
-
-			// For existing item
-			if ( itemIdx > -1 )
-			{
-				Vue.set( list.items, itemIdx, updatedTask );
-			}
-			// For new item
-			else
-			{
-				updatedTask.id = guid();
-				list.items.push( updatedTask );
-			}
+			const itemIdx = state.items.findIndex( task => task.id == item.id );
+			state.items[ itemIdx ].body = updatedItem.body;
 		},
-
 		// Delete Task List Item
 		delete_task_lane_item( state, deletedTask )
 		{
-			const list = state.items.find( ( list, index ) => list[ toString( index ) ] == deletedTask.row );
-			const itemIdx = list.findIndex( item => item.id == deletedTask.id );
-			// For existing item
-			if ( itemIdx > -1 )
-			{
-				Vue.delete( list.items, itemIdx );
-			}
+			const itemIdx = state.items.findIndex( task => task.id == deletedTask.id );
+			state.items[ itemIdx ];
+			state.items.splice( itemIdx, 1 );
+
 		},
 		// Reorder Task List Items
-		REORDER_TASKLIST_ITEMS ( state, payload )
+		reorder_task_lane_items( state, payload )
 		{
-			const list = state.items.find( ( list, index ) => list[ toString( index ) ] == payload.id );
-			Vue.set( list, "items", payload.items );
+			state.items.map( item =>
+			{
+				if (item.id === payload.id) item.row = payload.columnIndex;
+			})
 		},
+
 		move_task ( state, {fromItems, toItems, itemSeqNum} )
 		{
 			const itemToMove = fromItems.splice( itemSeqNum, 1 )[ 0 ];

@@ -1,6 +1,9 @@
+import axios from 'axios';
+import { authHeader } from '../auth_header'
+
+const INITIAL_DATA_URL_2 = `https://jsonplaceholder.typicode.com/posts`
 const INITIAL_DATA_URL = `https://trello.backend.tests.nekidaem.ru/api/v1`
 const API_KEY =`2XDXDUHQVJVK`
-import axios from 'axios'
 
 export default {
 		async login ( { commit }, user )
@@ -13,16 +16,16 @@ export default {
 					{
 						const token = resp.data.token;
 						const user = resp.data.user;
-						localStorage.setItem( 'token', token );
+						localStorage.setItem( 'user-token', token );
 
-						axios.defaults.headers.common[ 'Authorization' ] = token;
+						axios.defaults.headers.common[ 'Authorization' ] = `Bearer ${token}`;
 						commit( 'auth_success', token, user );
 						resolve( resp );
 					} )
 					.catch( err =>
 					{
 						commit( 'auth_error' );
-						localStorage.removeItem( 'token' );
+						localStorage.removeItem( 'user-token' );
 						reject( err );
 					} );
 			} );
@@ -37,7 +40,7 @@ export default {
 					{
 						const token = resp.data.token;
 						const user = resp.data.user;
-						localStorage.setItem( 'token', token );
+						localStorage.setItem( 'user-token', token );
 
 						axios.defaults.headers.common[ 'Authorization' ] = token;
 						commit( 'auth_success', token, user );
@@ -46,7 +49,7 @@ export default {
 					.catch( err =>
 					{
 						commit( 'auth_error', err );
-						localStorage.removeItem( 'token' );
+						localStorage.removeItem( 'user-token' );
 						reject( err );
 					} );
 			} );
@@ -56,7 +59,7 @@ export default {
 			return new Promise( ( resolve, reject ) =>
 			{
 				commit( 'logout' );
-				localStorage.removeItem( 'token' );
+				localStorage.removeItem( 'user-token' );
 				 delete axios.defaults.headers.common[ 'Authorization' ];
 				resolve();
 			} );
@@ -66,10 +69,13 @@ export default {
 	{
 		commit( "set_loading_state", true );
 
-		return axios.get( `${ INITIAL_DATA_URL }/cards&API_KEY=${ API_KEY }` )
+		const requestOptions = {
+			headers: authHeader()
+		};
+
+		return axios.get( `${ INITIAL_DATA_URL_2 }`, requestOptions)
 			.then( res =>
 			{
-			console.log(res.data[0])
 			commit( "set_initial_data", res.data );
 			commit( "set_loading_state", false );
 		} );
@@ -88,21 +94,20 @@ export default {
 		} );
 	},
 
-	async saveTaskLaneItem ( { commit }, updatedTask )
+	async saveTaskLaneItem ( { commit }, updatedItem)
 	{
-		return axios.patch( `${ INITIAL_DATA_URL }/cards/${updatedTask.id}` )
-			.then( res => {
-			commit( "save_task_lane_item", updatedTask );
-		} );
+		/*return axios.patch( `${ INITIAL_DATA_URL }/cards/${updatedItem.id}`, updatedItem )
+			.then( res => {*/
+		commit( "save_task_lane_item", updatedItem );
+		//} );
 	},
 
 	async deleteTaskLaneItem ( { commit }, deletedTask )
 	{
-		return axios.patch( `${ INITIAL_DATA_URL }/cards/${ deletedTask.id }` )
-			.then( res =>
-			{
+		/*return axios.patch( `${ INITIAL_DATA_URL }/cards/${ deletedTask.id }` )
+			.then( res => {*/
 				commit( "delete_task_lane_item", deletedTask );
-			} );
+			//} );
 	},
 	reorderTaskListItems ( { commit }, payload )
 	{
