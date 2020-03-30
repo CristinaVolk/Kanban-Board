@@ -4,11 +4,9 @@
 			<draggable v-model="draggables" :options="{ group: 'default' }">
 				<div v-for="item in items"
 				:key="item.id"
-				@drop = "moveItem($event, items)"
 				@dragover.prevent
 				@dragenter.prevent
 				draggable = "true"
-				@dragstart = "pickupItem($event, item.seq_num, columnIndex)"
 				>
 				<item :item="item"></item>
 				</div>
@@ -21,7 +19,7 @@
 <script>
 	import Draggable from 'vuedraggable';
 	import TaskLaneItem from './TaskLaneItem';
-	import { mapActions } from "vuex"
+	import { mapMutations, mapActions } from 'vuex'
 	export default {
 		name: 'TaskLane',
 		props: [ 'columnIndex', 'title', 'items' ],
@@ -41,15 +39,19 @@
 			{
 				const payload = {
 					itemId: item.id,
-					items: this.items,
+					items: reorderedListItems,
 					columnIndex: this.columnIndex
+
 				}
-				this.$store.commit.reorderTaskListItems( payload )
+				this.reorderTaskListItems( payload )
 			}
 		}
 	},
 		methods:  {
-			pickupItem(event, itemISeqNum, fromColumnIndex){
+			//...mapMutations(['move_task']),
+			...mapActions(['reorderTaskListItems']),
+
+			/*pickupItem(event, itemISeqNum, fromColumnIndex){
 				event.dataTransfer.effectAllowed = 'move'
 				event.dataTransfer.dropEffect = 'move'
 
@@ -61,9 +63,8 @@
 				const fromItems = this.$store.state.items.filter(item => item.row == fromColumnIndex)
 				const itemSeqNum = event.dataTransfer.getData('item-seq_num')
 
-				this.$store.commit('move_task', { fromItems, toItems, itemSeqNum})
-
-			}
+				this.move_task({ fromItems, toItems, itemSeqNum, columnIndex})
+			}*/
 		}
 }
 </script>

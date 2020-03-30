@@ -5,10 +5,6 @@
 				Board
 				<i id="space" class="fa fa-th-large" aria-hidden="true"></i>
 			</router-link>
-			<router-link to="/backlog" :class="buttonClass('/backlog')">
-				Backlog
-				<i class="fa fa-list" aria-hidden="true"></i>
-			</router-link>
 		</div>
 	</div>
 </template>

@@ -1,7 +1,6 @@
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import KanbanBoard from '@/components/KanbanBoard';
-import Backlog from '@/components/Backlog';
 
 let routes = [
     {
@@ -13,10 +12,6 @@ let routes = [
       path: '/register',
       name: 'register',
       component: Register
-    },
-    {
-      path: '/backlog',
-      component: Backlog
     },
     {
       path: '/board',

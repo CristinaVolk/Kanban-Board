@@ -1,3 +1,4 @@
+import Vue from "vue";
 
 export default {
 		auth_request ( state )
@@ -22,13 +23,14 @@ export default {
 
 		set_initial_data ( state, payload)
 		{
-		state.items = payload
+			state.items = payload
+			state.loading = false
 		},
 
 		// Set Loading State
 		set_loading_state ( state, payload )
 		{
-			state.isLoading = payload;
+			state.loading = payload;
 		},
 
 		addTask ( state, newTask )
@@ -39,7 +41,7 @@ export default {
 		// Save Task List Item
 		save_task_lane_item ( state, updatedItem )
 		{
-			const itemIdx = state.items.findIndex( task => task.id == item.id );
+			const itemIdx = state.items.findIndex( task => task.id === updatedItem.id );
 			state.items[ itemIdx ].body = updatedItem.body;
 		},
 		// Delete Task List Item
@@ -56,12 +58,14 @@ export default {
 			state.items.map( item =>
 			{
 				if (item.id === payload.id) item.row = payload.columnIndex;
-			})
+			} )
+			Vue.set("items", payload.items)
 		},
 
 		move_task ( state, {fromItems, toItems, itemSeqNum} )
 		{
 			const itemToMove = fromItems.splice( itemSeqNum, 1 )[ 0 ];
+			itemToMove.row = columnIndex
 			toItems.push( itemToMove)
 		}
 }

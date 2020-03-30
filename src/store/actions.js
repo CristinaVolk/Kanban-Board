@@ -6,7 +6,7 @@ const INITIAL_DATA_URL = `https://trello.backend.tests.nekidaem.ru/api/v1`
 const API_KEY =`2XDXDUHQVJVK`
 
 export default {
-		async login ( { commit }, user )
+		async loginUser ( { commit }, user )
 		{
 			return new Promise( ( resolve, reject ) =>
 			{
@@ -30,7 +30,7 @@ export default {
 					} );
 			} );
 		},
-		async register ( { commit }, user )
+		async registerUser ( { commit }, user )
 		{
 			return new Promise( ( resolve, reject ) =>
 			{

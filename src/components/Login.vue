@@ -18,6 +18,7 @@
  </div>
 </template>
 <script>
+	import { mapActions } from "vuex"
 	export default {
 		data(){
 			return {
@@ -27,10 +28,11 @@
             }
 		},
 		methods: {
+			...mapActions(["loginUser"]),
 		 	login: function () {
 		   		let username = this.username
 		   		let password = this.password
-		   		this.$store.dispatch('login', { username, password })
+		   		this.loginUser( { username, password })
 		   		.then(() => this.$router.push('/board'))
 		   		.catch(err => {
 					   console.log(err)

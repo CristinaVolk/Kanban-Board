@@ -24,6 +24,7 @@
     </div>
 </template>
 <script>
+    import { mapActions } from "vuex"
     export default {
         data(){
             return {
@@ -33,13 +34,14 @@
             }
         },
         methods: {
+            ...mapActions(['registerUser']),
             register: function () {
-                let data = {
+                let user = {
                     username: this.username,
                     email: this.email,
                     password: this.password
                 }
-                this.$store.dispatch('register', data)
+                this.registerUser(user)
                .then(() => this.$router.push('/board'))
                .catch(err => console.log(err))
             }

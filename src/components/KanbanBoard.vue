@@ -1,7 +1,8 @@
 <template>
 	<div class="board">
 		<menu-bar></menu-bar>
-		<div class="row">
+		<div v-if="isLoading"> Loading...</div>
+		<div v-else class="row">
 			<div class="col-sm-3">
 			   <div class="title" style="background: #F67117;" >ON HOLD ({{onHoldItemCount}})</div>
 				<task-lane columnIndex="0" title="on_hold" :items="on_hold"></task-lane>
@@ -35,6 +36,7 @@
 		name: 'KanbanBoard',
 		components: {MenuBar, TaskLane, NewItemForm },
 		computed: mapState( {
+			isLoading: state => state.loading,
 			on_hold: state => state.items.filter( item => item.userId === 1),
 			inProgress: state => state.items.filter( item => item.userId  === 2 ),
 			needs_review: state => state.items.filter( item => item.userId  === 3),

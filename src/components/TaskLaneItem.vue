@@ -1,26 +1,13 @@
 <template>
 	<div class="card task-lane-item">
 		<div class="card-block">
-			<div class ="flex flex-col flex-grow items-start justify-between px-4">
-				id: {{item.id}}
-				<input
-					type="text"
-					class="p-2 w-full mr-2 block text-xl font-bold"
-					:value = "item.title"
-					>
-				<textarea
-					class="relative w-full bg-transparent px-2 border mt-2 h-64 border-none leading normal"
-					:value = "item.body"
-					@change = "handleChange($event)"
-					>
-				</textarea>
-					<button class="btn btn-outline-secondary btn-sm mr-2" @click.prevent="updateItem">
-							Save
+			<div class ="flex-container">
+				<span>id: {{item.id}}</span>
+					<button class="button button-close" @click.prevent="remove">
+						x
 					</button>
-					<button class="btn btn-sm text-danger" @click.prevent="remove">
-							Delete
-					</button>
-
+					<div contenteditable class="describtion" :value="item.body" @change="updateItem($event)">{{item.body}}
+					</div>
 			</div>
 		</div>
 	</div>
@@ -32,24 +19,18 @@
 	export default {
 		name: 'TaskLaneItem',
 		props: [ 'item' ],
-
 		methods:
-		{
-			handleChange( $event ) {
-				this.item.body = event.target.value
-			},
+		{ ...mapActions(['saveTaskLaneItem', 'deleteTaskLaneItem']),
+
 			updateItem()
 			{
-				this.$store.dispatch('saveTaskLaneItem', this.item)
-			},
-			cancel()
-			{
-				this.$emit( "item-cancelled" )
+				this.item.body = event.target.value
+				console.log(this.item)
+				this.saveTaskLaneItem(this.item)
 			},
 			remove()
 			{
-				this.$store.dispatch('deleteTaskLaneItem', this.item)
-				this.$emit( "item-deleted" )
+				this.deleteTaskLaneItem(this.item)
 			}
 		}
 
@@ -59,8 +40,42 @@
 </script>
 
 <style>
+	.card-block {
+		background: rgb(29, 28, 32);
+		margin-top: 10px;
+		height: 155px;
+	}
 	.card.task-lane-item {
-		background: #627180;
-		margin-top: 20px;
+		background: rgb(29, 28, 32);
+		height: 100%;
+	}
+	.flex-container {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		align-items: flex-start;
+		background-color: rgb(3, 3, 3);
+		top: 10px;
+    	right: 10px;
+    	left: 10px;
+		width: 280px;
+		height: 75%;
+
+	}
+	.button-close {
+		position: absolute;
+    	float: right;
+		border: none;
+		color: rgb(191, 197, 216);
+		background-color: rgb(3, 3, 3);
+		top: 1px;
+    	right: 1px;
+	}
+	.describtion {
+		height: 100%;
+		overflow:hidden;
+		text-align: left;
+		padding-top: 5px;
+		font-size: 0.9em;
 	}
 </style>

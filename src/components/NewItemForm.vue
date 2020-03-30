@@ -7,6 +7,7 @@
 </template>
 
 <script>
+	import { mapActions } from "vuex"
 	export default {
 		props: ["row"],
 		name: 'NewItemForm',
@@ -17,6 +18,7 @@
 			};
 		},
 		methods: {
+			...mapActions(['createTask']),
 			submitForm()
 			{
 				if ( this.text )
@@ -25,7 +27,7 @@
 							row: this.row,
 							text: this.text
 					}
-					this.$store.dispatch( 'createTask', newTask )
+					this.createTask( newTask )
 						.then( () => this.$router.push( '/' ) )
 						.catch( err => console.log( err ) )
 				}
