@@ -15,7 +15,7 @@
     computed: {...mapGetters( [ 'isLoggedIn' ] )
     },
     beforeCreate () {
-      //window.localStorage.setItem('user-token', '')
+      window.localStorage.setItem('user-token', '')
       this.$store.dispatch( "fetchData" )
     },
     methods: {
@@ -39,8 +39,8 @@
               return axios.post( 'https://trello.backend.tests.nekidaem.ru/api/v1/users/refresh_token/', { refreshToken } )
               .then( ( { data } ) =>
               {
-                //window.localStorage.setItem( 'user-token', data.token );
-                //window.localStorage.setItem( 'refreshToken', data.refreshToken );
+                window.localStorage.setItem( 'user-token', data.token );
+                window.localStorage.setItem( 'refreshToken', data.refreshToken );
                 axios.defaults.headers.common[ 'Authorization' ] = data.token;
                 originalRequest.headers[ 'Authorization' ] =data.token;
                 return axios( originalRequest );
