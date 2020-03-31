@@ -52,20 +52,11 @@ export default {
 			state.items.splice( itemIdx, 1 );
 
 		},
-		// Reorder Task List Items
-		reorder_task_lane_items( state, payload )
-		{
-			state.items.map( item =>
-			{
-				if (item.id === payload.id) item.row = payload.columnIndex;
-			} )
-			Vue.set("items", payload.items)
-		},
 
-		move_task ( state, {fromItems, toItems, itemSeqNum} )
+		reorder_items ( state, payload )
 		{
-			const itemToMove = fromItems.splice( itemSeqNum, 1 )[ 0 ];
-			//itemToMove.row = columnIndex
-			toItems.push( itemToMove)
+			console.log( payload )
+			const itemIdx = state.items.findIndex( task => task.id == payload.itemID );
+			state.items[ itemIdx ].userId = payload.toItems[ 0 ].userId;
 		}
 }

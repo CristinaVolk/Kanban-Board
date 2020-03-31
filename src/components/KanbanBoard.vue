@@ -1,26 +1,25 @@
 <template>
 	<div class="board">
-		<menu-bar></menu-bar>
 		<div v-if="isLoading"> Loading...</div>
 		<div v-else class="row">
 			<div class="col-sm-3">
 			   <div class="title" style="background: #F67117;" >ON HOLD ({{onHoldItemCount}})</div>
-				<task-lane columnIndex="0" title="on_hold" :items="on_hold"></task-lane>
+				<task-lane columnIndex="0" :items="on_hold"></task-lane>
 				<new-item-form row="0"></new-item-form>
 			</div>
 			<div class="col-sm-3">
 				<div class="title" style="background: #1768F6;">IN PROGRESS	({{inProgressItemCount}})</div>
-				<task-lane columnIndex="1" title="inProgress" :items="inProgress"></task-lane>
+				<task-lane columnIndex="1" :items="inProgress"></task-lane>
 				<new-item-form row="1"></new-item-form>
 			</div>
 			<div class="col-sm-3">
 				<div class="title" style="background: #EEEB00;">NEEDS REVIEW ({{needsReviewItemCount}})</div>
-				<task-lane columnIndex="2" title="needs_review" :items="needs_review"></task-lane>
+				<task-lane columnIndex="2" :items="needs_review"></task-lane>
 				<new-item-form row="2"></new-item-form>
 			</div>
 			<div class="col-sm-3">
 				<div class="title" style="background: #2FAC18;">APPROVED ({{approvedItemCount}})</div>
-				<task-lane columnIndex="3" title="approved" :items="approved"></task-lane>
+				<task-lane columnIndex="3" :items="approved"></task-lane>
 				<new-item-form row="3"></new-item-form>
 			</div>
 		</div>
@@ -28,13 +27,12 @@
 </template>
 
 <script>
-	import MenuBar from './MenuBar';
 	import TaskLane from './TaskLane';
 	import NewItemForm from './NewItemForm';
 	import { mapState } from 'vuex';
 	export default {
 		name: 'KanbanBoard',
-		components: {MenuBar, TaskLane, NewItemForm },
+		components: { TaskLane, NewItemForm },
 		computed: mapState( {
 			isLoading: state => state.loading,
 			on_hold: state => state.items.filter( item => item.userId === 1),
@@ -54,10 +52,6 @@
 </script>
 
 <style>
-	.menubar {
-		margin-bottom: 16px;
-	}
-
 	#space {
 		margin: 20px;
 	}

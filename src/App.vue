@@ -26,7 +26,7 @@
         })
       }
     },
-    created () {      
+    created () {
       this.$http.interceptors.response.use(function (response) {
         return response;
       }, function (error)

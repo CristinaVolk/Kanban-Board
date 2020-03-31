@@ -25,7 +25,6 @@
 			updateItem()
 			{
 				this.item.body = event.target.value
-				console.log(this.item)
 				this.saveTaskLaneItem(this.item)
 			},
 			remove()
