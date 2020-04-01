@@ -15,7 +15,7 @@
     computed: {...mapGetters( [ 'isLoggedIn' ] )
     },
     beforeCreate () {
-      window.localStorage.setItem('user-token', '')
+      //window.localStorage.setItem('user-token', '')
       this.$store.dispatch( "fetchData" )
     },
     methods: {

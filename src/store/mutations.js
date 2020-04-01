@@ -53,10 +53,9 @@ export default {
 
 		},
 
-		reorder_items ( state, payload )
+		reorder_items ( state, { itemToPush, relatedItem} )
 		{
-			console.log( payload )
-			const itemIdx = state.items.findIndex( task => task.id == payload.itemID );
-			state.items[ itemIdx ].userId = payload.toItems[ 0 ].userId;
+			const itemToPushIndex = state.items.findIndex( task => task.id == itemToPush.id );
+			state.items[ itemToPushIndex ].userId = relatedItem.userId;
 		}
 }

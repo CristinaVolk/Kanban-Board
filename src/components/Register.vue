@@ -16,7 +16,6 @@
             <div>
                 <input id="password" type="password" v-model="password" required>
             </div>
-
             <div>
                 <button type="submit">Register</button>
             </div>
@@ -25,6 +24,7 @@
 </template>
 <script>
     import { mapActions } from "vuex"
+
     export default {
         data(){
             return {
@@ -35,16 +35,17 @@
         },
         methods: {
             ...mapActions(['registerUser']),
-            register: function () {
-                let user = {
-                    username: this.username,
-                    email: this.email,
-                    password: this.password
-                }
-                this.registerUser(user)
-               .then(() => this.$router.push('/board'))
-               .catch(err => console.log(err))
-            }
+            register: function ()
+                {
+                    let user = {
+                        username: this.username,
+                        email: this.email,
+                        password: this.password
+                    }
+                    this.registerUser( user )
+                        .then( () => this.$router.push( '/board' ) )
+                        .catch( err => console.log( err ) )
+                },
         }
     }
 </script>
