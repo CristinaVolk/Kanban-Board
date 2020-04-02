@@ -1,3 +1,4 @@
+import Vue from "vue";
 
 export default {
 		auth_request ( state )
@@ -19,61 +20,42 @@ export default {
 			state.status = '';
 			state.token = '';
 		},
-			
-		set_initial_data ( state, fetchedItems)
+
+		set_initial_data ( state, payload)
 		{
-			state.items[ "0" ] = fetchedItems.filter( item => item.row == "0")
-			state.items[ "1" ] = fetchedItems.filter( item => item.row == "1")
-			state.items[ "2" ] = fetchedItems.filter( item => item.row == "2" )
-			state.items[ "3" ] = fetchedItems.filter( item => item.row == "3")
+			state.items = payload
+			state.loading = false
 		},
 
 		// Set Loading State
 		set_loading_state ( state, payload )
 		{
-			state.isLoading = payload;
+			state.loading = payload;
 		},
-		
-		addTask ( state, task )
+
+		addTask ( state, newTask )
 		{
-			state.items["0"].push( Object.assign( task ) );
-			state.nextId += 1;
-		},	
-		
-		// Save Task List Item
-		saveTaskLaneItem ( state, updatedTask )
-		{			
-			const list = state.items.find( (list, index) => list[toString(index)] == updatedTask.row );
-			const itemIdx = list.findIndex( item => item.id == updatedTask.id );
-
-			// For existing item
-			if ( itemIdx > -1 )
-			{
-				Vue.set( list.items, itemIdx, updatedTask );
-			}
-			// For new item
-			else
-			{
-				updatedTask.id = guid();
-				list.items.push( updatedTask );
-			}
+			state.items[ "0" ].push( Object.assign( newTask ) );
 		},
 
+		// Save Task List Item
+		save_task_lane_item ( state, updatedItem )
+		{
+			const itemIdx = state.items.findIndex( task => task.id === updatedItem.id );
+			state.items[ itemIdx ].body = updatedItem.body;
+		},
 		// Delete Task List Item
 		delete_task_lane_item( state, deletedTask )
 		{
-			const list = state.items.find( ( list, index ) => list[ toString( index ) ] == deletedTask.row );
-			const itemIdx = list.findIndex( item => item.id == deletedTask.id );
-			// For existing item
-			if ( itemIdx > -1 )
-			{
-				Vue.delete( list.items, itemIdx );
-			}
+			const itemIdx = state.items.findIndex( task => task.id == deletedTask.id );
+			state.items[ itemIdx ];
+			state.items.splice( itemIdx, 1 );
+
 		},
-		// Reorder Task List Items
-		REORDER_TASKLIST_ITEMS ( state, payload )
-		{			
-			const list = state.items.find( ( list, index ) => list[ toString( index ) ] == payload.id );
-			Vue.set( list, "items", payload.items );
+
+		reorder_items ( state, { itemToPush, relatedItem} )
+		{
+			const itemToPushIndex = state.items.findIndex( task => task.id == itemToPush.id );
+			state.items[ itemToPushIndex ].userId = relatedItem.userId;
 		}
 }

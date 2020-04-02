@@ -1,44 +1,14 @@
 <template>
-	<div class="card task-lane-item" v-if="!isEditing" @click.prevent="startEditing">
+	<div class="card task-lane-item">
 		<div class="card-block">
-			<div :class="[isNewItem ? 'text-center text-dark font-weight-bold disable-select' : 'text-dark disable-select']">
-				<span> {{ displayText }} </span>
+			<div class ="flex-container">
+				<span>id: {{item.id}}</span>
+					<button class="button button-close" @click.prevent="remove">
+						x
+					</button>
+					<div contenteditable class="describtion" :value="item.body" @change="updateItem($event)">{{item.body}}
+					</div>
 			</div>
-		</div>
-	</div>
-
-	<div class="card" v-else>
-		<div class="card-block">
-			<form class="form">
-				<div class="form-group">
-					<textarea
-						name="itemDetails"
-						rows="3" class="form-control"
-						v-model.trim="form.text"
-						v-validate="'required'"
-						data-vv-as="Item Details"
-						placeholder="Your item description">
-					</textarea>
-						<small class="text-danger">{{ errors.first("itemDetails") }}</small>
-				</div>
-
-
-				<div :class="[isNewItem ? 'text-center' : 'd-flex justify-content-between', 'form-group']">
-					<div>
-						<button class="btn btn-outline-secondary btn-sm mr-2" @click.prevent="save">
-							Save
-						</button>
-						<button class="btn btn-outline-secondary btn-sm" @click.prevent="cancel">
-							Cancel
-						</button>
-					</div>
-					<div v-show="!isNewItem">
-						<button class="btn btn-sm text-danger" @click.prevent="remove">
-							Delete
-						</button>
-					</div>
-				</div>
-		    </form>
 		</div>
 	</div>
 </template>
@@ -49,70 +19,17 @@
 	export default {
 		name: 'TaskLaneItem',
 		props: [ 'item' ],
-
-		data()
-			{
-				return {
-					isEditing: false,
-					form: {
-						id: "",
-						text: ""
-					}
-				}
-			},
-
-		computed:
-		{
-			isNewItem() {
-			return this.item.id == ""
-			},
-			displayText() {
-				return this.isNewItem ? "+ New Item" : this.item.text }
-		},
 		methods:
-		{
-			...mapActions( {
-				saveTaskListItem: "saveTaskLaneItem",
-				deleteTaskListItem: "deleteTaskLaneItem"
-			} ),
-			startEditing()
+		{ ...mapActions(['saveTaskLaneItem', 'deleteTaskLaneItem']),
+
+			updateItem()
 			{
-				this.form.id = this.item.id
-				this.form.text = this.item.text
-				this.isEditing = true
-				this.$emit( "item-editing" )
-			},
-			clearForm()
-			{
-				this.form.id = ""
-				this.form.text = ""
-			},
-			save()
-			{
-				this.$validator.validateAll().then( result =>
-				{
-					if ( result )
-					{
-					const updatedItem = {
-					id: this.form.id,
-					text: this.form.text
-					}
-						this.saveTaskLaneItem( { item: updatedItem } )
-						this.isEditing = false
-						this.$emit( "item-edited" )
-						this.$validator.reset()
-					}
-				} )
-			},
-			cancel()
-			{
-				this.isEditing = false
-				this.$emit( "item-cancelled" )
+				this.item.body = event.target.value
+				this.saveTaskLaneItem(this.item)
 			},
 			remove()
 			{
-				this.deleteTaskLaneItem( { item: this.item } )
-							this.$emit( "item-deleted" )
+				this.deleteTaskLaneItem(this.item)
 			}
 		}
 
@@ -122,7 +39,42 @@
 </script>
 
 <style>
+	.card-block {
+		background: rgb(29, 28, 32);
+		margin-top: 10px;
+		height: 155px;
+	}
 	.card.task-lane-item {
-		background: #627180;
+		background: rgb(29, 28, 32);
+		height: 100%;
+	}
+	.flex-container {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		align-items: flex-start;
+		background-color: rgb(3, 3, 3);
+		top: 10px;
+    	right: 10px;
+    	left: 10px;
+		width: 280px;
+		height: 75%;
+
+	}
+	.button-close {
+		position: absolute;
+    	float: right;
+		border: none;
+		color: rgb(191, 197, 216);
+		background-color: rgb(3, 3, 3);
+		top: 1px;
+    	right: 1px;
+	}
+	.describtion {
+		height: 100%;
+		overflow:hidden;
+		text-align: left;
+		padding-top: 5px;
+		font-size: 0.9em;
 	}
 </style>

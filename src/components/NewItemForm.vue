@@ -1,13 +1,15 @@
 <template>
 	<div class="add-item">
 		<form action="#" method="post" v-on:submit.prevent="submitForm">
-			<input type="text" v-model="text" value="A description of the task" :placeholder="text">
+			<input type="text" class="block p-2 w-full bg-transparent" v-model="text" placeholder="Add a card" @keyup.enter="submitForm">
 		</form>
 	</div>
 </template>
 
 <script>
+	import { mapActions } from "vuex"
 	export default {
+		props: ["row"],
 		name: 'NewItemForm',
 		data()
 		{
@@ -16,15 +18,16 @@
 			};
 		},
 		methods: {
+			...mapActions(['createTask']),
 			submitForm()
 			{
 				if ( this.text )
 				{
 					let newTask = {
-							row: "0",
-							text: this.text,
+							row: this.row,
+							text: this.text
 					}
-					this.$store.dispatch( 'createTask', newTask )
+					this.createTask( newTask )
 						.then( () => this.$router.push( '/' ) )
 						.catch( err => console.log( err ) )
 				}
@@ -42,7 +45,7 @@
 		width: 100%;
 		transition: all 0.25s;
 		background: inherit;
-		color: black
+		color: whitesmoke
 		;
 	}
 
@@ -52,5 +55,9 @@
 
 	.add-item {
 		margin: 30px 0;
+	}
+
+	::placeholder {
+  		color:whitesmoke;
 	}
 </style>

@@ -1,61 +1,52 @@
 <template>
 	<div class="card">
-		<div class="card-body">
-			<draggable v-model="draggables" :options="{ group: 'default' }">
-				<div v-for="item in items" :key="item.id">
-					<item id="item-lane" :item="item"></item>
+		<draggable
+		v-model="itemList" group="tasks" @start="drag=true" @clone = "clone = false" :move='onMove'>
+				<div
+					v-for="(item, index) in itemList"
+					:key="index">
+						<item :item="item"></item>
 				</div>
-			</draggable>
-		</div>
-		<div class="card-footer text-muted">
-			{{itemCount}}
-		</div>
+		</draggable>
 	</div>
 </template>
 
 <script>
-	import Draggable from 'vuedraggable';
+	import Vue from 'vue'
 	import TaskLaneItem from './TaskLaneItem';
-	import { mapActions } from "vuex"
+	import { mapMutations } from 'vuex'
+	import draggable from 'vuedraggable'
+
 	export default {
 		name: 'TaskLane',
-		props: [ 'items', 'title', 'id' ],
+		props: [ 'columnIndex','items' ],
+		data () {
+			 return {itemList: this.items}
+		},
 		components: {
 			item: TaskLaneItem,
-			draggable: Draggable
+			draggable
 		},
-		computed:
-		{
-			itemCount()
+		methods: {
+			onMove: function ( evt )
 			{
-				if ( !this.items ) return '';
-				if ( this.items.length === 1 ) return '1 task';
-				return `${ this.items.length } tasks`;
-			},
-		draggables:
-		{
-			get()
-			{
-				return this.items;
-			},
-			set( reorderedListItems )
-			{
-				const payload = {
-					id: this.id,
-					items: reorderedListItems
-				}
-				this.$store.commit.reorderTaskListItems( payload )
+				const fromItems = evt.draggedContext
+				const toItems = evt.relatedContext.list;
+				const itemToPush = evt.draggedContext.element;
+				const relatedItemIndex = evt.relatedContext.index;
+				toItems.splice( relatedItemIndex, 0, itemToPush)
+
+				this.$store.commit( 'reorder_items', {
+					itemToPush: itemToPush,
+					relatedItem: evt.relatedContext.element,
+				} );
 			}
 		}
-	}
 }
 </script>
 
 <style>
 	.card-body>* {
 		min-height: 50px;
-		min-width: 400px;
 	}
-
-
 </style>

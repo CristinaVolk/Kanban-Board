@@ -1,14 +1,9 @@
 export default {
-		isLoading: true,
 		status: '',
-		token: localStorage.getItem( 'token' ) || '',
+		token: localStorage.getItem( 'user-token' ) || false,
+		loading: true,
 		user: {},
-		items: {
-			"0": [],
-			"1": [],
-			"2": [],
-			"3":[]
-		},		    
+		items: [],
 		nextId: 1
 
 }
