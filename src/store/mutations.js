@@ -41,7 +41,7 @@ export default {
 		// Save Task List Item
 		save_task_lane_item ( state, updatedItem )
 		{
-			const itemIdx = state.items.findIndex( task => task.id === updatedItem.id );
+			const itemIdx = state.items.findIndex( task => task.id === updatedItem.id );			
 			state.items[ itemIdx ].body = updatedItem.body;
 		},
 		// Delete Task List Item

@@ -108,10 +108,6 @@ export default {
 			.then( res => {*/
 				commit( "delete_task_lane_item", deletedTask );
 			//} );
-	},
-	reorderTaskListItems ( { commit }, payload )
-	{
-		commit( "reorder_task_lane_items", payload );
-	},
+	}
 };
 
